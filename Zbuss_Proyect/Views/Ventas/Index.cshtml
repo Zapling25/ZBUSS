@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Zbuss_Proyect.Models.TbDetalleVenta>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="tb-Ventas">
+<h1>Ventas Concretadas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaVenta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MetodoPago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Igv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descuento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                Nro de documento
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaVenta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MetodoPago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Igv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descuento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IduserNavigation.NroDocumento)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Idventa">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Idventa">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Idventa">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+<div>
+    <a id="printPDF" class="btn btn-primary">Print</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js">id</script>
+<script type="text/javascript">
+</script>
+
+@section scripts {
+    <script>
+        $("#printPDF").click(function () {
+            var element = document.getElementById('tb-Ventas');
+
+            html2pdf().from(element).set({
+                margin: [30, 30, 15, 30],
+                pagebreak: { avoid: 'tr' },
+
+                jsPDF: { orientation: 'landscape', unit: 'pt', format: 'letter', compressPDF: true }
+            }).save()
+        });</script>
+}

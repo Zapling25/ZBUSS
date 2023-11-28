@@ -1,0 +1,106 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Busseando</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    
+    
+    <link href="~/css/Estilos.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3" style="background-color: #37952f ">
+            <div class="container">
+                <a class="contenedor"><a class="moneda"></a></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BUSSEANDO</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse row justify-content-between">
+                    <div class="col-auto">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item" style="right: 1rem;">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Usuario" asp-action="Login"><i class="bi bi-person-fill"></i> Iniciar Sesión</a>
+                            </li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Usuario" asp-action="Logout"><i class="bi bi-door-open-fill"></i> Cerrar sesión</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-auto">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ViajesUser" asp-action="Index"><i class="bi bi-cursor-fill"></i> Destinos</a>
+                            </li>
+                            @if (User.IsInRole("ADMIN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Viajes" asp-action="Index"><i class="bi bi-list-nested"></i> Viajes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Buses" asp-action="Index"><i class="bi bi-truck"></i> Buses</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ventas</a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Ventas" asp-action="Index"><i class="bi bi-coin"></i> Ventas</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Ventas" asp-action="VentasCanceladas"><i class="bi bi-coin"></i> R. Canceladas</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item" style="right: 1rem;">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="MantenimientoU" asp-action="Index"><i class="bi bi-person-fill"></i> Usuarios</a>
+                                </li>
+                            }
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Ventas" asp-action="Reservas"><i class="bi bi-calendar-check"></i> Reservas</a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="bi bi-exclamation-circle-fill"></i> Terms. y Conds.</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!--<footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; EMPRESA DE TRANSPORTE TURISTICO ZBUSS S.A. ©--> <!-- --><!--2022--><!-- --> <!--Todos los derechos reservados <a asp-area="" asp-controller="Home" asp-action="Privacy">Términos y condiciones de uso</a>
+            
+        </div>
+    </footer>-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="~/js/html2pdf.bundle.min.js"></script>
+</body>
+</html>

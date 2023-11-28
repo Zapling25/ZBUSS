@@ -1,0 +1,159 @@
+﻿@model Zbuss_Proyect.Models.TbUsuarios
+
+@{
+    ViewData["Title"] = "CREAR USUARIO";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Crear</h1>
+
+<h4>Usuario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Tipo de documento</label>
+                <select class="form-select" aria-label="Default select example" id="cboTipo">
+                    <option selected value="">Tipo de documento</option>
+                    <option value="DNI">DNI</option>
+                    <option value="CARNE DE EXTRANJERIA">CARNE DE EXTRANJERIA</option>
+                </select>
+                <span asp-validation-for="TipoDoc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Nro de Documento</label>
+                <input class="form-control" maxlength="8" id="txtDoc"/>
+                <span asp-validation-for="NroDocumento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Nombres</label>
+                <input class="form-control" maxlength="50" id="txtNombres"/>
+                <span asp-validation-for="Nombres" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Apellidos</label>
+                <input class="form-control" maxlength="50" id="txtApellidos"/>
+                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Correo" class="control-label">Correo</label>
+                <input asp-for="Correo" class="form-control" maxlength="50" id="txtCorreo"/>
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Contraseña</label>
+                <input class="form-control" maxlength="50" id="txtContra1"/>
+                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Confirmar contraseña</label>
+                <input class="form-control" maxlength="50" id="txtContra2"/>
+                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Celular" class="control-label">Celular</label>
+                <input asp-for="Celular" class="form-control" maxlength="9" id="txtCelular"/>
+                <span asp-validation-for="Celular" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Rol de usuario</label>
+                <select class="form-select" aria-label="Default select example" id="cboRol">
+                </select>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="chkEstado">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Activo
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Registrar usuario" class="btn btn-success" id="btnRegistrar"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Regresar a la lista</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax
+            ({
+                type: "GET",
+                url: "/Roles/RecuperarRoles",
+                dataType: "json",
+                success: function (result) {
+                    var html = "";
+                    var roles = result;
+                    for (var i in roles) {
+                        html += "<option value='"+ roles[i].id +"'>"+ roles[i].descripcion +"</option>"
+                    }
+                    $('#cboRol').html(html);
+
+                    if (result == null) {
+                        alert("No hay roles por mostrar");
+                    }
+                },
+                error: function (result) {
+                    alert("Falló al intentar acceder al controlador")
+                }
+            })
+    })
+    $('#btnRegistrar').click(function (e) {
+
+        var tipoDoc = $('#cboTipo').val();
+        var nroDoc = $('#txtDoc').val();
+        var nombres = $('#txtNombres').val();
+        var apellidos = $('#txtApellidos').val();
+        var correo = $('#txtCorreo').val();
+        var contra = $('#txtContra1').val();
+        var contra2 = $('#txtContra2').val();
+        var celular = $('#txtCelular').val();
+        var rol = $('#cboRol').val();
+        var estado = "false";
+        if ($('#chkEstado').is(":checked")) {
+            estado = "true";
+        }
+
+        if (contra != contra2) {
+            alert("Las contraseñas deben coincidir!. Vuelva a intentar");
+        }
+        else {
+            var params = {
+                TipoDoc: tipoDoc,
+                NroDocumento: nroDoc,
+                Nombres: nombres,
+                Apellidos: apellidos,
+                Correo: correo,
+                Contrasena: contra,
+                Celular: celular,
+                Rol: rol,
+                Estado: estado
+            }
+            console.log(params);
+            var VG_RUTA_SERVIDOR = "";
+            $.ajax
+                ({
+                    type: "POST",
+                    url: "/MantenimientoU/Create",
+                    data: { pUser: params },
+                    dataType: "json",
+                    success: function (result) {
+                        console.log(result)
+                        window.top.location.href = VG_RUTA_SERVIDOR + "Index";
+                        if (result == null) {
+                            alert("Faltan llenar campos o el correo ya está usado por otra persona")
+                            location.href = "https://localhost:44326/Usuario/Create";
+                        }
+                    },
+                    error: function (result) {
+                        alert("Ha ocurrido un error al acceder al controller");
+                    }
+                })
+        }
+    })
+</script>

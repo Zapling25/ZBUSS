@@ -1,0 +1,131 @@
+﻿@model Zbuss_Proyect.Models.TbDetalleViaje
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Crear</h1>
+
+<h4>Creación de viaje</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Idbus" class="control-label">Bus</label>
+                <select asp-for="Idbus" class="form-control" asp-items="ViewBag.Idbus" id="cboBus"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaSalida" class="control-label">Fecha de salida</label>
+                <input asp-for="FechaSalida" class="form-control" id="dtpFechaSalida" />
+                <span asp-validation-for="FechaSalida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraSalida" class="control-label">Hora de salida</label>
+                <input asp-for="HoraSalida" class="form-control" id="tHoraSalida" />
+                <span asp-validation-for="HoraSalida" class="text-danger" id="tHoraSalida"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PuntoPartida" class="control-label">Punto de partida</label>
+                <select asp-for="PuntoPartida" class="form-control" name="Start_point" id="cboPuntoPartida">
+                    <option selected value="">Partida</option>
+                    <option value="CARAZ">CARAZ</option>
+                    <option value="CARHUAZ">CARHUAZ</option>
+                    <option value="HUACHO">HUACHO</option>
+                    <option value="HUARAL">HUARAL</option>
+                    <option value="HUARAZ">HUARAZ</option>
+                    <option value="LIMA">LIMA</option>
+                    <option value="YUNGAY">YUNGAY</option>
+                </select>
+                <span asp-validation-for="PuntoPartida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PuntoLlegada" class="control-label">Punto de llegada</label>
+                <select asp-for="PuntoLlegada" class="form-control" name="Start_point" id="cboPuntoLlegada">
+                    <option selected value="">Llegada</option>
+                    <option value="CARAZ">CARAZ</option>
+                    <option value="CARHUAZ">CARHUAZ</option>
+                    <option value="HUACHO">HUACHO</option>
+                    <option value="HUARAL">HUARAL</option>
+                    <option value="HUARAZ">HUARAZ</option>
+                    <option value="LIMA">LIMA</option>
+                    <option value="YUNGAY">YUNGAY</option>
+                </select>
+                <span asp-validation-for="PuntoPartida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Crear viaje" class="btn btn-success" id="btnCrear" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver a la lista</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $('#btnCrear').click(function (e) {
+        var idbus = $('#cboBus').val();
+        var fechasalida = $('#dtpFechaSalida').val();
+        var horasalida = $('#tHoraSalida').val();
+        var puntopartida = $('#cboPuntoPartida').val();
+        var puntollegada = $('#cboPuntoLlegada').val();
+
+        fechasalidaFormat = new Date(fechasalida);
+        fecha = fechasalidaFormat.setDate(fechasalidaFormat.getDate() + 1);
+        var hoy = new Date();
+
+        if (fechasalida < hoy) {
+            alert("La fecha programada debe ser el dia actual o posterior");
+        }
+
+        if (fechasalida == "" || horasalida == "" ||
+            puntopartida == "" || puntollegada == "") {
+            alert("Faltan datos que completar");
+            return
+        }
+        if (puntopartida == puntollegada) {
+            alert("La partida y el destino no pueden ser iguales");
+            return
+        }
+
+        var params = {
+            Idbus: idbus,
+            FechaSalida: fechasalida,
+            HoraSalida: horasalida,
+            PuntoPartida: puntopartida,
+            PuntoLlegada: puntollegada
+        }
+
+        console.log(params);
+        alert("Se recuperaron los datos");
+        $.ajax
+            ({
+                type: "POST",
+                url: "/Viajes/CreatePost",
+                data: { pViaje: params },
+                dataType: "json",
+                success: function (result) {
+                    alert("wenas");
+                    if (result == null) {
+                        alert("El bus ya está utilizado en el horario o hubo un error en el registro");
+                    }
+
+                    console.log(result);
+
+                    alert("Registro exitoso");
+                },
+                error: function (result) {
+                    window.location = "@Url.Action("Index","Viajes")";
+                }
+            })
+    })
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

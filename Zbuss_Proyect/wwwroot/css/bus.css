@@ -1,0 +1,8 @@
+﻿.bus_marco {
+    height: calc( var(--asiento) * 14);
+    width: calc( var(--asiento) * 5);
+    position: absolute;
+    top: 20%;
+    display: flex;
+    flex-wrap: wrap;
+}

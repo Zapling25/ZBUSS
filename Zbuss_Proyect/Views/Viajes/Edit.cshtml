@@ -1,0 +1,70 @@
+﻿@model Zbuss_Proyect.Models.TbDetalleViaje
+
+@{
+    ViewData["Title"] = "Editar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Actualizar</h1>
+
+<h4>Actualizar viaje</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idviaje" />
+            <div class="form-group">
+                <label asp-for="Idbus" class="control-label">Bus</label>
+                <select asp-for="Idbus" class="form-control" asp-items="ViewBag.Idbus"></select>
+                <span asp-validation-for="Idbus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaSalida" class="control-label">Fecha de salida</label>
+                <input asp-for="FechaSalida" class="form-control" />
+                <span asp-validation-for="FechaSalida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraSalida" class="control-label">Hora de salida</label>
+                <input asp-for="HoraSalida" class="form-control" />
+                <span asp-validation-for="HoraSalida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraLlegada" class="control-label">Hora de llegada</label>
+                <input asp-for="HoraLlegada" class="form-control" />
+                <span asp-validation-for="HoraLlegada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PuntoPartida" class="control-label">Punto de partida</label>
+                <input asp-for="PuntoPartida" class="form-control" />
+                <span asp-validation-for="PuntoPartida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PuntoLlegada" class="control-label">Punto de llegada</label>
+                <input asp-for="PuntoLlegada" class="form-control" />
+                <span asp-validation-for="PuntoLlegada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NroAsientos" class="control-label">Número de asientos</label>
+                <input asp-for="NroAsientos" class="form-control" readonly />
+                <span asp-validation-for="NroAsientos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DuracionViaje" class="control-label">Horas de viaje</label>
+                <input asp-for="DuracionViaje" class="form-control" readonly />
+                <span asp-validation-for="DuracionViaje" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Actualizar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Regresar a la lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

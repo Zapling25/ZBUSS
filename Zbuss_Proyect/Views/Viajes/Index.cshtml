@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Zbuss_Proyect.Models.TbDetalleViaje>
+
+@{
+    ViewData["Title"] = "Viajes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Viajes programados</h1>
+
+<p>
+    <a asp-action="Create"><i class="bi bi-clipboard-plus-fill"></i> Crear viaje</a>
+</p>
+
+@using (Html.BeginForm("Index", "Viajes", FormMethod.Get))
+{
+    <p>
+        <label class="col-form-label">Ingrese partida o destino de viaje:</label> @Html.TextBox("SearchString")
+        <input type="submit" value="Filtrar" class="btn btn-success" />
+    </p>
+}
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                Fecha de salida
+            </th>
+            <th>
+                Hora de salida
+            </th>
+            <th>
+                Punto de partida
+            </th>
+            <th>
+                Punto de llegada
+            </th>
+            <th>
+                Nro. de asientos
+            </th>
+            <th>
+                Placa de bus
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaSalida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraSalida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PuntoPartida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PuntoLlegada)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NroAsientos)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdbusNavigation.Placa)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Idviaje" type="button" class="btn btn-primary">Editar</a>|
+                    <a asp-action="Details" asp-route-id="@item.Idviaje" type="button" class="btn btn-success">Detalle</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Idviaje" type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
+            </tr>
+        }
+    </tbody>
+</table>

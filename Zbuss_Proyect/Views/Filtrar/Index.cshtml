@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Zbuss_Proyect.Models.TbDetalleViaje>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Alert != null)
+{
+<div class="alert alert-warning alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+    <h2><i class="bi bi-exclamation-triangle-fill"></i> Alerta!</h2>
+    @ViewBag.Alert
+</div>
+}
+
+<h1>Resultados</h1>
+<table class="table">
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaSalida)<br />
+                <label class="col-form-label font-weight-bold">Fecha salida</label>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoraSalida)
+            </td>
+            <td><i class="bi bi-arrow-right-square-fill"></i></td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoraLlegada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PuntoPartida)<br />
+                <label class="col-form-label font-weight-bold"><i class="bi bi-geo-alt"></i> Partida</label>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PuntoLlegada)<br />
+                <label class="col-form-label font-weight-bold"><i class="bi bi-geo-alt"></i> Llegada</label>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NroAsientos)<br />
+                <label class="col-form-label font-weight-bold">Asientos</label>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DuracionViaje) Hrs.
+            </td>
+            <td>
+                <a asp-controller="Pasajero" asp-action="Create" asp-route-id="@item.Idviaje" class="btn btn-success">Comprar boleto</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,139 @@
+﻿@model Zbuss_Proyect.Models.TbPasajero
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Alert != null)
+{
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+        <h2><i class="bi bi-exclamation-triangle-fill"></i> Alerta!</h2>
+        @ViewBag.Alert
+    </div>
+}
+
+<h1>Registro</h1>
+
+<h4>Registro de pasajero</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TpoDocumento" class="control-label">Tipo de documento</label>
+                <select class="form-select" aria-label="Default select example" id="cboTipo">
+                    <option selected value="">Tipo de documento</option>
+                    <option value="DNI">DNI</option>
+                    <option value="CARNE DE EXTRANJERIA">CARNE DE EXTRANJERIA</option>
+                </select>
+                <span asp-validation-for="TpoDocumento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NroDocumento" class="control-label">Nro de documento</label>
+                <input asp-for="NroDocumento" id="nroDoc" class="form-control" />
+                <span asp-validation-for="NroDocumento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label">Nombre</label>
+                <input asp-for="Nombre" id="nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApePaterno" class="control-label">Apellido paterno</label>
+                <input asp-for="ApePaterno" id="apePaterno" class="form-control" />
+                <span asp-validation-for="ApePaterno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApeMaterno" class="control-label">Apellido materno</label>
+                <input asp-for="ApeMaterno" id="apeMaterno" class="form-control" />
+                <span asp-validation-for="ApeMaterno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Correo" class="control-label">Correo electrónico</label>
+                <input asp-for="Correo" id="correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Celular" class="control-label">Celular</label>
+                <input asp-for="Celular" id="celular" class="form-control" />
+                <span asp-validation-for="Celular" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sexo" class="control-label">Sexo</label>
+                <select class="form-select" aria-label="Default select example" id="cboSexo">
+                    <option selected value="">Sexo</option>
+                    <option value="MASCULINO">MASCULINO</option>
+                    <option value="FEMENINO">FEMENINO</option>
+                </select>
+                <span asp-validation-for="Sexo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaNac" class="control-label">Fecha de nacimiento</label>
+                <input asp-for="FechaNac" id="fechaNac" class="form-control" />
+                <span asp-validation-for="FechaNac" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" id="btnRegistrar" value="Registrar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    function mostrarId() {
+        var id = $(this).val();
+        alert(id);
+    }
+    $('#btnRegistrar').click(function (e) {
+
+        var tipoDoc = $('#cboTipo').val();
+        var nroDoc = $('#nroDoc').val();
+        var nombre = $('#nombre').val();
+        var apePaterno = $('#apePaterno').val();
+        var apeMaterno = $('#apeMaterno').val();
+        var correo = $('#correo').val();
+        var celular = $('#celular').val();
+        var sexo = $('#cboSexo').val();
+        var fechaNac = $('#fechaNac').val();
+
+        var params = {
+            TpoDocumento: tipoDoc,
+            NroDocumento: nroDoc,
+            Nombre: nombre,
+            ApePaterno: apePaterno,
+            ApeMaterno: apeMaterno,
+            Correo: correo,
+            Celular: celular,
+            Sexo: sexo,
+            FechaNac: fechaNac,
+        }
+
+        $.ajax
+            ({
+                type: "POST",
+                url: "/Pasajero/Registrar",
+                data: { pPasa: params },
+                dataType: "json",
+                success: function (result) {
+                    if (result == null) {
+                        alert("Faltan llenar campos o el dni ya está usado por otra persona")
+                    }
+                    console.log(result)
+                    console.log(result.iduser);
+                    var idPasa = result.iduser;
+                    localStorage.setItem("idPas", idPasa);
+                    location.href = "@Url.Action("Procesar","Pago")";
+                },
+                error: function (result) {
+                    alert("Ha ocurrido un error al acceder al controller");
+                }
+            })
+    })
+</script>

@@ -1,0 +1,194 @@
+﻿@model Zbuss_Proyect.Models.TbUsuarios
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Editar</h1>
+
+<h4>TbUsuarios</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdUsuario" />
+            <div class="form-group">
+                <label class="control-label">Tipo de documento</label>
+                <select class="form-select" aria-label="Default select example" id="cboTipo">
+                    <option selected value="">Tipo de documento</option>
+                    <option value="DNI">DNI</option>
+                    <option value="CARNE DE EXTRANJERIA">CARNE DE EXTRANJERIA</option>
+                </select>
+                <span asp-validation-for="TipoDoc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Nro de Documento</label>
+                <input class="form-control" maxlength="8" id="txtDoc" />
+                <span asp-validation-for="NroDocumento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Nombres</label>
+                <input class="form-control" maxlength="50" id="txtNombres" />
+                <span asp-validation-for="Nombres" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Apellidos</label>
+                <input class="form-control" maxlength="50" id="txtApellidos" />
+                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Correo" class="control-label">Correo</label>
+                <input asp-for="Correo" class="form-control" maxlength="50" id="txtCorreo" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Contraseña</label>
+                <input class="form-control" maxlength="50" id="txtContra1" />
+                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Confirmar contraseña</label>
+                <input class="form-control" maxlength="50" id="txtContra2" />
+                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Celular" class="control-label">Celular</label>
+                <input asp-for="Celular" class="form-control" maxlength="9" id="txtCelular" />
+                <span asp-validation-for="Celular" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Rol de usuario</label>
+                <select class="form-select" aria-label="Default select example" id="cboRol">
+                </select>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="chkEstado">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Activo
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Actualizar usuario" class="btn btn-success" id="btnRegistrar" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    var idUsuario = localStorage.getItem("codUser");
+    $(document).ready(function () {
+        $.ajax
+            ({
+                type: "GET",
+                url: "/Roles/RecuperarRoles",
+                dataType: "json",
+                success: function (result) {
+                    var html = "";
+                    var roles = result;
+                    for (var i in roles) {
+                        html += "<option value='" + roles[i].id + "'>" + roles[i].descripcion + "</option>"
+                    }
+                    $('#cboRol').html(html);
+
+                    if (result == null) {
+                        alert("No hay roles por mostrar");
+                    }
+                },
+                error: function (result) {
+                    alert("Falló al intentar acceder al controlador")
+                }
+            })
+        $.ajax
+            ({
+                type: "GET",
+                url: "/MantenimientoU/RecuperarUsuario",
+                data: { idUsuario },
+                dataType: "json",
+                success: function (result) {
+                    var user = result;
+
+                    $('#txtDoc').val(user.nroDocumento);
+                    $('#txtNombres').val(user.nombres);
+                    $('#txtApellidos').val(user.apellidos);
+                    $('#txtCorreo').val(user.correo);
+                    $('#txtContra1').val(user.contrasena);
+                    $('#txtContra2').val(user.contrasena);
+                    $('#txtCelular').val(user.celular);
+
+                    if (user == null) {
+                        alert("Usuario no existe, pruebe con otro.");
+                    }
+                },
+                error: function (result) {
+                    alert("Falló al intentar acceder al controlador")
+                }
+            })
+    })
+    $('#btnRegistrar').click(function (e) {
+
+        var idUsuario = localStorage.getItem("codUser");
+
+        var tipoDoc = $('#cboTipo').val();
+        var nroDoc = $('#txtDoc').val();
+        var nombres = $('#txtNombres').val();
+        var apellidos = $('#txtApellidos').val();
+        var correo = $('#txtCorreo').val();
+        var contra = $('#txtContra1').val();
+        var contra2 = $('#txtContra2').val();
+        var celular = $('#txtCelular').val();
+        var rol = $('#cboRol').val();
+        var estado = "false";
+        if ($('#chkEstado').is(":checked")) {
+            estado = "true";
+        }
+
+        if (contra != contra2) {
+            alert("Las contraseñas deben coincidir!. Vuelva a intentar");
+        }
+        else {
+            var params = {
+                IdUsuario: idUsuario,
+                TipoDoc: tipoDoc,
+                NroDocumento: nroDoc,
+                Nombres: nombres,
+                Apellidos: apellidos,
+                Correo: correo,
+                Contrasena: contra,
+                Celular: celular,
+                Rol: rol,
+                Estado: estado
+            }
+            console.log(params);
+            $.ajax
+                ({
+                    type: "POST",
+                    url: "/MantenimientoU/Actualizar",
+                    data: { pUser: params },
+                    dataType: "json",
+                    success: function (result) {
+                        alert("Edición exitosa");
+                        console.log(result)
+                        location.href = "https://localhost:44326/MantenimientoU";
+                        /*window.top.location.href = VG_RUTA_SERVIDOR + "Index";*/
+                        if (result == null) {
+                            alert("Faltan llenar campos o el correo ya está usado por otra persona")
+                            location.href = "https://localhost:44326/Usuario/Create";
+                        }
+                    },
+                    error: function (result) {
+                        alert("Ha ocurrido un error al acceder al controller");
+                    }
+                })
+        }
+    })
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

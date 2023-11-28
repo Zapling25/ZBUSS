@@ -1,0 +1,63 @@
+﻿@model Zbuss_Proyect.Models.TbUsuarios
+
+@{
+    ViewData["Title"] = "Restablecer";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+<style>
+    body {
+        background: #ffffff;
+        background: linear-gradient(to right, #ffffff, #ffffff)
+    }
+
+    .bg {
+        background-image: url(https://i.pinimg.com/564x/fb/8a/79/fb8a79fb15d1aa22a4a278aafb30f4d1.jpg);
+        background-position: center center
+    }
+</style>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+        <h2><i class="bi bi-exclamation-triangle-fill"></i> Alerta!</h2>
+        @ViewBag.Error
+    </div>
+}
+
+<h1>Restablecer</h1>
+
+<h4>Contraseña olvidada</h4>
+<hr />
+<div class="container w-75 bg-primary mt-5 rounded shadow">
+    <div class="row align-items-stretch">
+        <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded">
+            <div>
+
+            </div>
+        </div>
+        <div class="col bg-white p-5 rounded-end">
+            <form class="mx-auto" asp-action="Restablecer">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-4">
+                    <label asp-for="Correo" class="control-label">Ingrese el correo de la cuenta</label>
+                    <input asp-for="Correo" class="form-control" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Celular" class="control-label">Teléfono asociado a la cuenta</label>
+                    <input id="txtCelular" asp-for="Celular" class="form-control" maxlength="9" />
+                    <span asp-validation-for="Celular" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <input type="submit" value="Reestablecer" class="btn btn-primary" />
+                </div>
+                <div>
+                    <a asp-action="Login">Iniciar Sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

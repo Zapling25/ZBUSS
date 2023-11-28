@@ -1,0 +1,69 @@
+﻿@model Zbuss_Proyect.Models.TbDetalleViaje
+
+@{
+    ViewData["Title"] = "Eliminar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Eliminar</h1>
+
+<h3>Estás seguro de eliminar el viaje?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Fecha de salida :
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaSalida)
+        </dd>
+        <dt class = "col-sm-2">
+            Hora de salida :
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HoraSalida)
+        </dd>
+        <dt class = "col-sm-2">
+            Hora de llegada :
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HoraLlegada)
+        </dd>
+        <dt class = "col-sm-2">
+            Punto de partida :
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PuntoPartida)
+        </dd>
+        <dt class = "col-sm-2">
+            Punto de llegada :
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PuntoLlegada)
+        </dd>
+        <dt class = "col-sm-2">
+            Nro. de asientos :
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NroAsientos)
+        </dd>
+        <dt class = "col-sm-2">
+            Horas de viaje :
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DuracionViaje) Hrs.
+        </dd>
+        <dt class = "col-sm-2">
+            Placa de bus :
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdbusNavigation.Placa)
+        </dd class>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Idviaje" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index">Volver a la lista</a>
+    </form>
+</div>

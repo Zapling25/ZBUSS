@@ -1,0 +1,97 @@
+﻿@model Zbuss_Proyect.Models.TbDetalleVenta
+
+@{
+    ViewData["Title"] = "CancerlarReserva";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>CancerlarReserva</h1>
+
+@if (ViewBag.Alert != null)
+{
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+        <h2><i class="bi bi-exclamation-triangle-fill"></i> Alerta!</h2>
+        @ViewBag.Alert
+    </div>
+}
+
+
+<div>
+    <h4>Detalle Venta</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            Fecha de compra:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.FechaVenta)
+        </dd>
+        <dt class="col-sm-4">
+            Fecha de embarque:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.FechaViaje)
+        </dd>
+        <dt class="col-sm-4">
+            Subtotal:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.SubTotal)
+        </dd>
+        <dt class="col-sm-4">
+            Método de pago:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.MetodoPago)
+        </dd>
+        <dt class="col-sm-4">
+            Igv:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Igv)
+        </dd>
+        <dt class="col-sm-4">
+            Descuento:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Descuento)
+        </dd>
+        <dt class="col-sm-4">
+            Total:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+        <dt class="col-sm-4">
+            Fecha de viaje:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.FechaViaje)
+        </dd>
+        <dt class="col-sm-4">
+            Código de asiento:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IdasientoNavigation.CodAsiento)
+        </dd>
+        <dt class="col-sm-4">
+            Doc. de pasajero:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IduserNavigation.NroDocumento)
+        </dd>
+        <dt class="col-sm-4">
+            Correo de comprador:
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IdusuarioNavigation.Correo)
+        </dd>
+    </dl>
+
+    <form asp-action="CancerlarReserva">
+        <input type="hidden" asp-for="Idventa" />
+        <input type="submit" value="Cancelar reserva" class="btn btn-danger" /> |
+        <a asp-action="Reservas">Regresar a lista de reservas</a>
+    </form>
+</div>

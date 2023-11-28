@@ -1,0 +1,176 @@
+﻿
+
+@{
+    ViewData["Title"] = "ProcesarPago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Pagar</h1>
+
+<h4>Procesar pago de viaje</h4>
+<hr />
+<div class="row justify-content-between">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Número de tarjeta</label>
+                <input class="form-control" id="nroTarjeta" maxlength="16" placeholder="1234123412341234">
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input checked="checked" id="visa" type="radio" name="credit-card" value="visa" />
+                        <img src="~/imagenes/visa_logo.png" alt="visaLogo" width="70" height="35"/>
+                    </div>
+                    <div class="col-md-6">
+                        <input id="mastercard" type="radio" name="credit-card" value="mastercard" />
+                        <img src="~/imagenes/mastercard_logo.jpg" alt="mastercardLogo" width="70" height="35"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Caducidad</label>
+                <input class="form-control" id="caducidad" placeholder="MM/AA" maxlength="5"/>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Código de seguridad/CVV</label>
+                <input class="form-control" id="codSeguridad" placeholder="123" maxlength="3"/>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Titular de la tarjeta</label>
+                <input class="form-control" maxlength="20"/>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Email</label>
+                <input class="form-control" id="email" placeholder="zbuss2022@gmail.com"/>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Pagar" class="btn btn-success" id="btnPagar" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <h2>Detalle de compra</h2>
+        <div class="form-group">
+            <h4 class="control-label">Subtotal:</h4>
+            S/<span class="control-label" id="txtSubTotal"></span>
+        </div>
+        <div class="form-group">
+            <h4 class="control-label">Código de asiento:</h4>
+            <span class="control-label" id="txtCodAsiento"></span>
+        </div>
+        <div class="form-group">
+            <h4 class="control-label">Igv:</h4>
+            S/<span class="control-label" id="txtIgv">0</span>
+        </div>
+        <div class="form-group">
+            <h4 class="control-label">Descuento:</h4>
+            S/<span class="control-label">0</span>
+        </div>
+        <div class="form-group">
+            <h4 class="control-label">Total a pagar:</h4>
+            S/<span class="control-label" id="txtTotal"></span>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    var idAsiento = localStorage.getItem("idAsi");
+    var precioAsiento = localStorage.getItem("precioAsi");
+    var codAsiento = localStorage.getItem("codAsi");
+    var idPasajero = localStorage.getItem("idPas");
+    var fechaV = localStorage.getItem("fechaViaje");
+    var igv = localStorage.getItem("Igv");
+    var total = localStorage.getItem("Total");
+
+    $(document).ready(function () {
+
+        $('#txtIgv').text(igv);
+        $('#txtSubTotal').text(precioAsiento);
+        $('#txtCodAsiento').text(codAsiento);
+        $('#txtTotal').text(total);
+    })
+    $('#btnPagar').click(function (e) {
+
+        var nroTarjeta = $('#nroTarjeta').val();
+        var codSeguridad = $('#codSeguridad').val();
+        var correo = $('#email').val();
+
+        if (nroTarjeta.length < 16) {
+            alert("Faltan números de tarjeta");
+            return false;
+        }
+        else if (codSeguridad.length < 3) {
+            alert("Faltan números de código de seguridad");
+            return false;
+        }
+
+        var params = {
+            Iduser: idPasajero,
+            Idasiento: idAsiento,
+            SubTotal: precioAsiento,
+            FechaViaje: fechaV,
+            Total: total
+        }
+
+        var VG_RUTA_SERVIDOR = "";
+        /*console.log(params);*/
+        $.ajax
+            ({
+                type: "POST",
+                url: "/Pago/ProcesarCompra",
+                data: { pVenta: params },
+                dataType: "json",
+                success: function (result) {
+                    if (result == null) {
+                        alert("El asiento ya ha comprado o hubo un error en la compra");
+                    }
+
+                    console.log(result);
+                    localStorage.setItem("idVe", result.idventa);
+                    localStorage.setItem("igvVe", result.igv);
+                    localStorage.setItem("subtotalVe", result.subTotal);
+                    localStorage.setItem("metodoVe", result.metodoPago);
+                    localStorage.setItem("totalVe", result.total);
+                    console.log(result.idventa);
+
+                    var id = result.idventa;
+                    var url = "@Url.Action("Reservas","Ventas")";
+                    window.location = url;
+                },
+                error: function (result) {
+                    if (result == null) {
+                        alert("El asiento ya ha comprado o hubo un error en la compra");
+                    }
+
+                    console.log(result);
+                    localStorage.setItem("idVe", result.idventa);
+                    localStorage.setItem("igvVe", result.igv);
+                    localStorage.setItem("subtotalVe", result.subTotal);
+                    localStorage.setItem("metodoVe", result.metodoPago);
+                    localStorage.setItem("totalVe", result.total);
+                    console.log(result.idventa);
+
+                    var id = result.idventa;
+                    var url = "@Url.Action("Reservas","Ventas")";
+                    window.location = url;
+                }
+            })
+    })
+
+    //document.getElementById('caducidad').addEventListener('keydown', event => {
+    //    var caducidad = document.getElementById('caducidad').value();
+    //    alert(caducidad);
+
+    //    if (caducidad.length > 1) {
+    //        document.getElementById('caducidad').innerHTML = caducidad + '/';
+    //    };
+    //});
+
+
+</script>

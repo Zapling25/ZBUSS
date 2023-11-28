@@ -1,0 +1,44 @@
+﻿.contenedor {
+    position: absolute;
+    left: 10%;
+    top: 20%;
+}
+
+.moneda {
+    background: rgb(255, 214, 64);
+    width: 50px;
+    height: 50px;
+    left: -10px;
+    position: relative;
+    border-radius: 8px;
+    animation: salto 0.8s infinite;
+}
+
+    .moneda::before {
+        content: '';
+        display: inline-block;
+        background: rgb(245, 237, 100);
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        border-radius: 10%;
+        left: -3px;
+        top: -3px;
+    }
+
+    .moneda::after {
+        content: '';
+        display: inline-block;
+        background-image: url("https://cdn-icons-png.flaticon.com/512/30/30979.png");
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        background-size: 45px 45px;
+        background-repeat: no-repeat;
+        top: 2px;
+    }
+
+@keyframes salto{
+    0%, 100% {top: 0;}
+    30% {top: -25px;}
+}

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Zbuss_Proyect.Models.TbDetalleViaje>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Alert != null)
+{
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+        <h2><i class="bi bi-exclamation-triangle-fill"></i> Alerta!</h2>
+        @ViewBag.Alert
+    </div>
+}
+
+<h1>Elige tu viaje a reservar</h1>
+<br />
+
+<div id="prueba">
+
+</div>
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaSalida)<br />
+                    <label class="col-form-label font-weight-bold">Fecha salida</label>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraSalida)
+                </td>
+                <td><i class="bi bi-arrow-right-square-fill"></i></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraLlegada)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PuntoPartida)<br />
+                    <label class="col-form-label font-weight-bold"><i class="bi bi-geo-alt"></i> Partida</label>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PuntoLlegada)<br />
+                    <label class="col-form-label font-weight-bold"><i class="bi bi-geo-alt"></i> Llegada</label>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NroAsientos)<br />
+                    <label class="col-form-label font-weight-bold">Asientos</label>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DuracionViaje) Hrs.
+                </td>
+                <td>
+                    <input type="button" value="Comprar boleto" onclick="recuperarId(@item.Idviaje)" class="btn btn-success" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+
+    function recuperarId(idViaje) {
+        $.ajax
+            ({
+                type: "POST",
+                url: "/ViajesUser/RecuperarViaje",
+                data: { id: idViaje },
+                dataType: "json",
+                success: function (result) {
+
+                    if (result == null) {
+                        alert("No se encontró el viaje");
+                    }
+
+                    var fechav = result.fechaSalida;
+                    var idBus = result.idbus;
+
+                    localStorage.setItem("fechaViaje", fechav);
+                    localStorage.setItem("codBus", idBus);
+                    window.location = '@Url.Action("Index", "Asientos")';
+                },
+                error: function (result) {
+                    alert("Error al acceder al controlador");
+                }
+            })
+    }
+
+</script>

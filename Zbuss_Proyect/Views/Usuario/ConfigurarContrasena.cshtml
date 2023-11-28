@@ -1,0 +1,63 @@
+﻿@model Zbuss_Proyect.Models.TbUsuarios
+
+@{
+    ViewData["Title"] = "ConfigurarContrasena";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+<style>
+    body {
+        background: #ffffff;
+        background: linear-gradient(to right, #ffffff, #ffffff)
+    }
+
+    .bg {
+        background-image: url(http://www.actualidadambiental.pe/wp-content/uploads/2019/08/huascaran-andina.jpg);
+        background-position: center center
+    }
+</style>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+        <h2><i class="bi bi-exclamation-triangle-fill"></i> Alerta!</h2>
+        @ViewBag.Error
+    </div>
+}
+
+<h3>Reestablecer contraseña</h3>
+
+<h6>Configuración</h6>
+<hr />
+<div class="container w-75 bg-primary mt-5 rounded shadow">
+    <div class="row align-items-stretch">
+        <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded">
+            <div>
+
+            </div>
+        </div>
+        <div class="col bg-white p-5 rounded-end">
+            <form class="mx-auto" asp-action="ConfigurarContrasena">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-4">
+                    <label asp-for="Contrasena" class="control-label">Nueva Contraseña</label>
+                    <input asp-for="Contrasena" class="form-control" />
+                    <span asp-validation-for="Contrasena" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Celular" class="control-label">Confirmar Contraseña</label>
+                    <input asp-for="Celular" type="password" class="form-control" />
+                    <span asp-validation-for="Celular" class="text-danger"></span>
+                </div>
+                <div class="d-grid">
+                    <input type="submit" value="Reestablecer contraseña" class="btn btn-primary" />
+                </div>
+                <div class="my-3">
+                    <a asp-action="Login">Iniciar Sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

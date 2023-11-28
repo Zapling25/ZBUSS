@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Zbuss_Proyect.Models.TbUsuarios>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Usuarios Registrados</h1>
+
+<p>
+    <a asp-action="Create" asp-controller="Usuario"> Crear nuevo</a>
+</p>
+    @using (Html.BeginForm("Index", "MantenimientoU", FormMethod.Get))
+    {
+    <p>
+        <label class="col-form-label">Ingrese nro de documento a buscar:</label> @Html.TextBox("SearchString")
+        <input type="submit" value="Filtrar" class="btn btn-success"/>
+    </p>
+    }
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Tipo Doc
+                </th>
+                <th>
+                    Nro. Doc
+                </th>
+                <th>
+                    Nombres
+                </th>
+                <th>
+                    Apellidos
+                </th>
+                <th>
+                    Correo
+                </th>
+                <th>
+                    Contraseña
+                </th>
+                <th>
+                    Celular
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TipoDoc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NroDocumento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Apellidos)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Correo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contrasena)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Celular)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                    <td>
+                        <input type="button" value="Editar" onclick="recuperarId(@item.IdUsuario)" class="btn btn-primary" />
+                        <a asp-action="Details" asp-route-id="@item.IdUsuario" type="button" class="btn btn-success">Detalle</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IdUsuario" type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        function recuperarId(idUser) {
+
+            var VG_RUTA_SERVIDOR = "";
+            console.log(idUser);
+            localStorage.setItem("codUser", idUser);
+            window.top.location.href = VG_RUTA_SERVIDOR + "MantenimientoU/Edit/" + idUser;
+        }
+
+    </script>

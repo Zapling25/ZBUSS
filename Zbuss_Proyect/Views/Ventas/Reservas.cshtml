@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Zbuss_Proyect.Models.TbDetalleVenta>
+
+@{
+    ViewData["Title"] = "Reservas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Reservas</h1>
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+        <h2><i class="bi bi-check-circle-fill"></i> Éxito!</h2>
+        @ViewBag.Success
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Fecha de venta
+            </th>
+            <th>
+                Fecha de embarque
+            </th>
+            <th>
+                Subtotal
+            </th>
+            <th>
+                Método de pago
+            </th>
+            <th>
+                Igv en S/.
+            </th>
+            <th>
+                Descuento
+            </th>
+            <th>
+                Total pagado
+            </th>
+            <th>
+                Cod. de asiento
+            </th>
+            <th>
+                Nombre del pasajero
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaVenta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaViaje)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MetodoPago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Igv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descuento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdasientoNavigation.CodAsiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IduserNavigation.Nombre)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Idventa">Details</a>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Pasajero" asp-route-id="@item.Iduser">Editar Pasajero</a>
+                </td>
+                <td>
+                    <a asp-action="CancerlarReserva" asp-route-id="@item.Idventa" type="button" class="btn btn-danger">Cancelar reserva</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

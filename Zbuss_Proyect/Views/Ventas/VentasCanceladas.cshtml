@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Zbuss_Proyect.Models.TbDetalleVenta>
+
+@{
+    ViewData["Title"] = "VentasCanceladas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>VentasCanceladas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaVenta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MetodoPago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Igv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descuento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaViaje)
+            </th>
+            <th>
+                Codigo de asiento
+            </th>
+            <th>
+                Documento de pasajero
+            </th>
+            <th>
+                Correo
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="text-danger">
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaVenta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MetodoPago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Igv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descuento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaViaje)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdasientoNavigation.CodAsiento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IduserNavigation.NroDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdusuarioNavigation.Correo)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Idventa">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

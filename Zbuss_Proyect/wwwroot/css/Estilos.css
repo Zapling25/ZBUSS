@@ -1,0 +1,26 @@
+.bg-default {
+    background-color: #172b4d !important;
+}
+
+.header {
+    position: relative;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%) !important;
+}
+
+.container-filter {
+    background: #37952f;
+    border-radius: 13px;
+}
+
+.fs-filter{
+    font-size: large;
+}
+
+.bg-img-home1 {
+    background-image: url('http://blog.redbus.pe/wp-content/uploads/2019/11/huaraz-2000x1200.jpg');
+    width: 100%;
+    height: 100%;
+}

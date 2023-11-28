@@ -1,0 +1,150 @@
+﻿@model Zbuss_Proyect.Models.TbUsuarios
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        background: #ffffff;
+        background: linear-gradient(to right, #ffffff, #ffffff)
+    }
+
+    .bg {
+        background-image: url(https://i.pinimg.com/564x/aa/0f/a1/aa0fa1f9706aca66258338a5df6773cb.jpg);
+        background-position: center center
+    }
+</style>
+
+@if (ViewBag.Alert != null)
+{
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+        <h2><i class="bi bi-exclamation-triangle-fill"></i> Alerta!</h2>
+        @ViewBag.Alert
+    </div>
+}
+
+<h5>Registrate Ingresando tus Datos</h5>
+
+<div class="container w-75 mt-5 rounded shadow">
+    <div class="row align-items-stretch">
+        <div class="col bg-white p-5 rounded-end">
+            <div class="text-end">
+                <img src="~/imagenes/bus1.png" , width="100" alt="" />
+            </div>
+            <form class="mx-auto" asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-4">
+                    <label asp-for="TipoDoc" class="control-label">Tipo de documento</label>
+                    <select class="form-select" aria-label="Default select example" id="cboTipo">
+                        <option selected value="">Tipo de documento</option>
+                        <option value="DNI">DNI</option>
+                        <option value="CARNE DE EXTRANJERIA">CARNE DE EXTRANJERIA</option>
+                    </select>
+                    <span asp-validation-for="TipoDoc" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="NroDocumento" class="control-label">Nº de documento</label>
+                    <input id="txtDoc" asp-for="NroDocumento" class="form-control" maxlength="8" />
+                    <span asp-validation-for="NroDocumento" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Nombres" class="control-label">Nombres completos</label>
+                    <input id="txtNombres" asp-for="Nombres" class="form-control" />
+                    <span asp-validation-for="Nombres" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Apellidos" class="control-label">Apellidos completos</label>
+                    <input id="txtApellidos" asp-for="Apellidos" class="form-control" />
+                    <span asp-validation-for="Apellidos" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Correo" class="control-label">Correo</label>
+                    <input id="txtCorreo" type="email" asp-for="Correo" class="form-control" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Contrasena" class="control-label">Contraseña</label>
+                    <input id="txtContrasena" asp-for="Contrasena" class="form-control" />
+                    <span asp-validation-for="Contrasena" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Contrasena" class="control-label">Confirmar Contraseña</label>
+                    <input id="txtContrasenaConfirm" asp-for="Contrasena" class="form-control" />
+                    <span asp-validation-for="Contrasena" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Celular" class="control-label">Celular</label>
+                    <input id="txtCelular" asp-for="Celular" class="form-control" maxlength="9" />
+                    <span asp-validation-for="Celular" class="text-danger"></span>
+                </div>
+                <div class="d-grid">
+                    <input type="button" id="btnRegistrar" value="Registrar" class="btn btn-primary" />
+                </div>
+                <div class="my-3">
+                    <a asp-action="Login">Iniciar Sesión</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded">
+            <div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $('#btnRegistrar').click(function (e) {
+
+        var tipoDoc = $('#cboTipo').val();
+        var nroDoc = $('#txtDoc').val();
+        var nombres = $('#txtNombres').val();
+        var apellidos = $('#txtApellidos').val();
+        var correo = $('#txtCorreo').val();
+        var contrasena = $('#txtContrasena').val();
+        var contrasenaConfirm = $('#txtContrasenaConfirm').val();
+        var celular = $('#txtCelular').val();
+
+        if (contrasena != contrasenaConfirm) {
+            alert("Las contraseñas deben coincidir");
+        }
+        else {
+            var params = {
+                TipoDoc: tipoDoc,
+                NroDocumento: nroDoc,
+                Nombres: nombres,
+                Apellidos: apellidos,
+                Correo: correo,
+                Contrasena: contrasena,
+                Celular: celular
+            }
+
+            $.ajax
+                ({
+                    type: "POST",
+                    url: "/Usuario/Create",
+                    data: { pUser: params },
+                    dataType: "json",
+                    success: function (result) {
+                        console.log(result)
+                        location.href = "https://localhost:44326";
+                        if (result == null) {
+                            alert("Faltan llenar campos o el correo ya está usado por otra persona")
+                            location.href = "https://localhost:44326/Usuario/Create";
+                        }
+                    },
+                    error: function (result) {
+                        alert("Ha ocurrido un error al acceder al controller");
+                    }
+                })
+        }
+    })
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
